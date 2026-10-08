@@ -1,0 +1,32 @@
+#!/bin/sh
+# HalkaOS 1.0 — ডেস্কটপ ডিফল্ট (LXQt)
+set -e
+
+# ---- LXQt সেশন ডিফল্ট: উইন্ডো ম্যানেজার = Openbox ----
+mkdir -p /etc/xdg/lxqt
+cat > /etc/xdg/lxqt/session.conf <<'EOF'
+[General]
+window_manager=openbox
+leave_confirmation=false
+EOF
+
+# ---- ডিফল্ট ওয়ালপেপার (pcmanfm-qt ডেস্কটপ) ----
+mkdir -p /etc/xdg/pcmanfm-qt/lxqt
+cat > /etc/xdg/pcmanfm-qt/lxqt/desktop-items-0.conf <<'EOF'
+[*]
+wallpaper_mode=stretch
+wallpaper=/usr/share/backgrounds/halkaos/wallpaper.png
+EOF
+
+# ---- Firefox: প্রথম চালুতে HalkaOS স্টার্ট পেজ ----
+mkdir -p /usr/lib/firefox-esr/distribution
+cat > /usr/lib/firefox-esr/distribution/policies.json <<'EOF'
+{
+  "policies": {
+    "Homepage": {
+      "URL": "https://github.com/halkaos/halkaos",
+      "StartPage": "homepage"
+    }
+  }
+}
+EOF
