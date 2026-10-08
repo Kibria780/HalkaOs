@@ -1,0 +1,35 @@
+# HalkaOS — GitHub Actions-এ স্বয়ংক্রিয় ISO বিল্ড
+name: Build HalkaOS ISO
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+      options: --privileged
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android \
+                 /usr/local/share/boost /opt/hostedtoolcache 2>/dev/null || true
+          df -h /
+
+      - name: Build ISO
+        run: |
+          chmod +x build-iso.sh auto/config config/hooks/*.hook.chroot
+          ./build-iso.sh
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: halkaos-1.0-amd64
+          path: |
+            *.iso
+            *.sha256
+          retention-days: 30
