@@ -1,0 +1,56 @@
+# ============================================================
+# HalkaOS 1.0 — মূল প্যাকেজ তালিকা (Debian 13 trixie)
+# নীতি: হালকা, Qt-ভিত্তিক, হাতে-বাছাই করা। কোনো bloat নেই।
+# ============================================================
+
+# ---- কোর সিস্টেম ----
+sudo
+xserver-xorg
+policykit-1
+udisks2
+upower
+gvfs-backends
+alsa-utils
+pipewire
+pipewire-pulse
+wireplumber
+pavucontrol-qt
+network-manager
+curl
+htop
+inxi
+
+# ---- ডেস্কটপ: LXQt + Openbox (idle ~300MB) ----
+lxqt-core
+lxqt-qtplugin
+openbox
+obconf-qt
+lightdm
+lightdm-gtk-greeter
+nm-tray
+qterminal
+pcmanfm-qt
+featherpad
+lximage-qt
+qps
+screengrab
+qalculate-qt
+papirus-icon-theme
+
+# ---- অ্যাপ ----
+firefox-esr
+mpv
+gparted
+
+# ---- বাংলা সাপোর্ট ----
+fonts-noto-core
+fonts-lohit-beng-bengali
+ibus
+ibus-m17n
+
+# ---- RAM অপ্টিমাইজেশন ----
+zram-tools
+
+# ---- ইনস্টলার ----
+calamares
+calamares-settings-debian
