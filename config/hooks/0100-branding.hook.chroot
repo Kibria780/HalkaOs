@@ -1,0 +1,53 @@
+#!/bin/sh
+# HalkaOS 1.0 — ব্র্যান্ডিং (chroot-এর ভেতরে চলে)
+set -e
+
+# ---- /etc/os-release: "Debian" নয়, "HalkaOS" ----
+cat > /etc/os-release <<'EOF'
+PRETTY_NAME="HalkaOS 1.0"
+NAME="HalkaOS"
+VERSION_ID="1.0"
+VERSION="1.0 (Halka)"
+VERSION_CODENAME=halka
+ID=halkaos
+ID_LIKE=debian
+HOME_URL="https://github.com/halkaos/halkaos"
+SUPPORT_URL="https://github.com/halkaos/halkaos/issues"
+BUG_REPORT_URL="https://github.com/halkaos/halkaos/issues"
+EOF
+
+cat > /etc/lsb-release <<'EOF'
+DISTRIB_ID=HalkaOS
+DISTRIB_RELEASE=1.0
+DISTRIB_CODENAME=halka
+DISTRIB_DESCRIPTION="HalkaOS 1.0"
+EOF
+
+echo "halkaos" > /etc/hostname
+
+cat > /etc/issue <<'EOF'
+HalkaOS 1.0 \n \l
+
+EOF
+
+# ---- ডেস্কটপে "Install HalkaOS" আইকন ----
+cat > /usr/share/applications/halkaos-installer.desktop <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=Install HalkaOS
+Comment=HalkaOS ডিস্কে ইনস্টল করো
+Exec=pkexec calamares
+Icon=calamares
+Terminal=false
+Categories=System;
+EOF
+mkdir -p /etc/skel/Desktop
+cp /usr/share/applications/halkaos-installer.desktop "/etc/skel/Desktop/Install HalkaOS.desktop"
+chmod +x "/etc/skel/Desktop/Install HalkaOS.desktop"
+
+# ---- Calamares ব্র্যান্ডিং: Debian-এরটা কপি করে HalkaOS বানাও ----
+if [ -d /etc/calamares/branding/debian ]; then
+  cp -r /etc/calamares/branding/debian /etc/calamares/branding/halkaos
+  sed -i 's/Debian/HalkaOS/g; s/debian/halkaos/g' /etc/calamares/branding/halkaos/branding.desc
+  sed -i 's/^branding:.*/branding: halkaos/' /etc/calamares/settings.conf
+fi
