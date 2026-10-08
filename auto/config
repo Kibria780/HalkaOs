@@ -33,4 +33,4 @@ else
 fi
 
 # shellcheck disable=SC2068
-lb config noauto $@ "${@}"
+lb config noauto "$@"
