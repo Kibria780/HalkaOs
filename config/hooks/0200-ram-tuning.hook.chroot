@@ -1,0 +1,38 @@
+#!/bin/sh
+# HalkaOS 1.0 — RAM টিউনিং: ৪GB মেশিনের জন্য আসল জাদু
+set -e
+
+# ---- zram: RAM-এর ৫০% compressed swap (lz4) ----
+# ৪GB মেশিনে কার্যকর মেমোরি দাঁড়ায় ~৬GB
+cat > /etc/default/zramswap <<'EOF'
+# HalkaOS: zram compressed swap
+ALGO=lz4
+PERCENT=50
+PRIORITY=100
+EOF
+systemctl enable zramswap.service 2>/dev/null || true
+
+# ---- কম RAM-এর জন্য kernel টিউনিং ----
+cat > /etc/sysctl.d/99-halkaos.conf <<'EOF'
+# HalkaOS low-RAM tuning
+vm.swappiness=100
+vm.vfs_cache_pressure=50
+vm.dirty_ratio=10
+vm.dirty_background_ratio=5
+EOF
+
+# ---- LightDM: পরিষ্কার লগইন স্ক্রিন, গেস্ট বন্ধ ----
+mkdir -p /etc/lightdm/lightdm.conf.d
+cat > /etc/lightdm/lightdm.conf.d/10-halkaos.conf <<'EOF'
+[Seat:*]
+greeter-session=lightdm-gtk-greeter
+allow-guest=false
+greeter-hide-users=false
+EOF
+
+cat > /etc/lightdm/lightdm-gtk-greeter.conf <<'EOF'
+[greeter]
+theme-name=Breeze
+icon-theme-name=Papirus
+background=/usr/share/backgrounds/halkaos/wallpaper.png
+EOF
