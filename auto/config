@@ -1,0 +1,36 @@
+#!/bin/sh
+# HalkaOS 1.0 — live-build কনফিগারেশন
+# বেস: Debian 13 "trixie" | আর্ক: amd64 | ডেস্কটপ: LXQt
+#
+# Debian ও Ubuntu — দুই live-build-এর সাথেই চলে (অপশন নিজে থেকে বেছে নেয়)।
+set -e
+
+# shellcheck disable=SC2086
+set -- \
+  --mode debian \
+  --distribution trixie \
+  --archive-areas "main contrib non-free non-free-firmware" \
+  --architectures amd64 \
+  --linux-flavours amd64 \
+  --binary-images iso-hybrid \
+  --debian-installer none \
+  --memtest none \
+  --win32-loader false \
+  --checksums sha256 \
+  --iso-application "HalkaOS" \
+  --iso-preparer "HalkaOS Project" \
+  --iso-publisher "HalkaOS Project" \
+  --iso-volume "HalkaOS 1.0 Halka" \
+  --bootappend-live "quiet"
+
+if lb config --help 2>&1 | grep -q -- --bootloaders; then
+  # Debian-এর আসল live-build
+  set -- "$@" --bootloaders "syslinux" "grub-efi" \
+              --image-name "halkaos-1.0-amd64"
+else
+  # Ubuntu-এর live-build (3.0~a57)
+  set -- "$@" --bootloader "grub"
+fi
+
+# shellcheck disable=SC2068
+lb config noauto $@ "${@}"
