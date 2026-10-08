@@ -1,0 +1,4 @@
+# HalkaOS 1.0 — হার্ডওয়্যার ফার্মওয়্যার (WiFi/গ্রাফিক্স/সাউন্ড চিপের জন্য)
+# non-free + non-free-firmware আর্কাইভ থেকে আসে
+firmware-linux
+firmware-sof-signed
