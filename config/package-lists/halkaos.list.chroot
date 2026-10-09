@@ -6,7 +6,7 @@
 # ---- কোর সিস্টেম ----
 sudo
 xserver-xorg
-policykit-1
+polkitd
 udisks2
 upower
 gvfs-backends
