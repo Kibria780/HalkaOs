@@ -21,7 +21,7 @@ set -- \
   --iso-preparer "HalkaOS Project" \
   --iso-publisher "HalkaOS Project" \
   --iso-volume "HalkaOS 1.0 Halka" \
-  --bootappend-live "quiet"
+  --bootappend-live "boot=live components quiet splash"
 
 if lb config --help 2>&1 | grep -q -- --bootloaders; then
   # Debian-এর আসল live-build
